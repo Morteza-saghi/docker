@@ -1,47 +1,5 @@
 # Docker Learning Guide
 
-## Table of Contents
-1. [Introduction to Docker](#introduction-to-docker)
-2. [Installing Docker](#installing-docker)
-   - [On Windows](#on-windows)
-   - [On macOS](#on-macos)
-   - [On Linux](#on-linux)
-3. [Basic Docker Concepts](#basic-docker-concepts)
-   - [Images](#images)
-   - [Containers](#containers)
-   - [Dockerfile](#dockerfile)
-   - [Volumes](#volumes)
-   - [Networks](#networks)
-4. [Working with Docker Images](#working-with-docker-images)
-   - [Pulling Images](#pulling-images)
-   - [Listing Images](#listing-images)
-   - [Removing Images](#removing-images)
-5. [Working with Docker Containers](#working-with-docker-containers)
-   - [Running Containers](#running-containers)
-   - [Stopping Containers](#stopping-containers)
-   - [Removing Containers](#removing-containers)
-   - [Viewing Logs](#viewing-logs)
-6. [Dockerfile: Building Your Own Images](#dockerfile-building-your-own-images)
-   - [Basic Structure](#basic-structure)
-   - [Creating a Dockerfile](#creating-a-dockerfile)
-   - [Building an Image](#building-an-image)
-7. [Docker Volumes: Managing Data](#docker-volumes-managing-data)
-   - [Creating Volumes](#creating-volumes)
-   - [Mounting Volumes](#mounting-volumes)
-   - [Inspecting Volumes](#inspecting-volumes)
-8. [Docker Networks: Managing Connectivity](#docker-networks-managing-connectivity)
-   - [Default Networks](#default-networks)
-   - [Creating a Network](#creating-a-network)
-   - [Connecting Containers to a Network](#connecting-containers-to-a-network)
-9. [Docker Compose: Multi-Container Applications](#docker-compose-multi-container-applications)
-   - [Installing Docker Compose](#installing-docker-compose)
-   - [docker-compose.yml Basics](#docker-composeyml-basics)
-   - [Running a Multi-Container Application](#running-a-multi-container-application)
-10. [Docker in Production](#docker-in-production)
-    - [Docker Swarm](#docker-swarm)
-    - [Kubernetes](#kubernetes)
-11. [Best Practices](#best-practices)
-12. [Resources](#resources)
 
 ## Introduction to Docker
 
@@ -63,41 +21,45 @@ Docker is an open-source platform that automates the deployment, scaling, and ma
 
 ### On Linux
 1. Update your existing package list:
-   ```bash
-   sudo apt-get update
+```
+sudo apt-get update
+```
 
-    Install required packages:
+Install required packages:
 
-    bash
 
+```
 sudo apt-get install \
     ca-certificates \
     curl \
     gnupg \
     lsb-release
+```
 
 Add Docker’s official GPG key:
 
-bash
-
+```
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+```
 
 Set up the stable repository:
 
-bash
 
+```
 echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+"deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+$(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
 
-Install Docker Engine:
+### Install Docker Engine:
 
-bash
+```
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+```
 
-    sudo apt-get update
-    sudo apt-get install docker-ce docker-ce-cli containerd.io
+Verify the installation by running ```docker --version```
 
-    Verify the installation by running docker --version.
 
 Basic Docker Concepts
 Images
@@ -120,81 +82,86 @@ Pulling Images
 
 To download an image from Docker Hub:
 
-bash
-
+```
 docker pull <image-name>
+```
 
 Listing Images
 
 To list all images on your system:
 
-bash
-
+```
 docker images
+```
 
-Removing Images
+### Removing Images
 
 To remove an image:
 
-bash
-
+```
 docker rmi <image-id>
+```
 
-Working with Docker Containers
+### Working with Docker Containers
+
 Running Containers
 
 To run a container from an image:
 
-bash
-
+```
 docker run <image-name>
+```
 
 To run a container in detached mode:
 
-bash
-
+```
 docker run -d <image-name>
+```
 
-Stopping Containers
+#### Stopping Containers
 
 To stop a running container:
 
-bash
-
+```
 docker stop <container-id>
+```
 
 Removing Containers
 
-To remove a stopped container:
+#### To remove a stopped container:
 
-bash
-
+```
 docker rm <container-id>
+```
 
-Viewing Logs
+#### Viewing Logs
 
 To view the logs of a container:
 
-bash
-
+```
 docker logs <container-id>
+```
 
-Dockerfile: Building Your Own Images
-Basic Structure
+## Dockerfile: Building Your Own Images
 
-A Dockerfile typically consists of the following instructions:
+### Basic Structure
 
+- A Dockerfile typically consists of the following instructions:
+
+```
     FROM: Specifies the base image.
     RUN: Executes a command during the build process.
     COPY or ADD: Copies files from the host machine to the container.
     CMD or ENTRYPOINT: Specifies the command to run when the container starts.
+```
 
-Creating a Dockerfile
+### Creating a Dockerfile
 
 Here is an example Dockerfile:
 
-Dockerfile
+#### Dockerfile
 
+```
 # Use an official Python runtime as a parent image
 FROM python:3.8-slim
 
@@ -215,80 +182,83 @@ ENV NAME World
 
 # Run app.py when the container launches
 CMD ["python", "app.py"]
+```
 
-Building an Image
+### Building an Image
 
 To build an image from a Dockerfile:
 
-bash
-
+```
 docker build -t <image-name> .
+```
 
-Docker Volumes: Managing Data
-Creating Volumes
+### Docker Volumes: Managing Data
+#### Creating Volumes
 
 To create a volume:
 
-bash
-
+```
 docker volume create <volume-name>
+```
 
-Mounting Volumes
+#### Mounting Volumes
 
 To mount a volume to a container:
 
-bash
-
+```
 docker run -d -v <volume-name>:/path/in/container <image-name>
+```
 
-Inspecting Volumes
+### Inspecting Volumes
 
-To inspect a volume:
+#### To inspect a volume:
 
-bash
-
+```
 docker volume inspect <volume-name>
+```
 
-Docker Networks: Managing Connectivity
-Default Networks
+### Docker Networks: Managing Connectivity
+#### Default Networks
 
 Docker automatically creates three networks on installation:
 
+```
     bridge: The default network for containers.
     none: For containers with no network.
     host: For containers that use the host's network stack.
+```
 
-Creating a Network
+### Creating a Network
 
-To create a custom network:
+#### To create a custom network:
 
-bash
-
+```
 docker network create <network-name>
+```
 
-Connecting Containers to a Network
+### Connecting Containers to a Network
 
 To connect a running container to a network:
 
-bash
-
+```
 docker network connect <network-name> <container-id>
+```
 
-Docker Compose: Multi-Container Applications
-Installing Docker Compose
+### Docker Compose: Multi-Container Applications
+
+#### Installing Docker Compose
 
 Docker Compose is included with Docker Desktop. On Linux, install it separately:
 
-bash
-
+```
 sudo apt install docker-compose
+```
 
 docker-compose.yml Basics
 
 A docker-compose.yml file defines a multi-container Docker application. Here’s an example:
 
-yaml
-
+```
 version: '3'
 services:
   web:
@@ -297,31 +267,12 @@ services:
       - "80:80"
   redis:
     image: "redis:alpine"
+```
 
 Running a Multi-Container Application
 
 To run the application defined in docker-compose.yml:
 
-bash
-
+```
 docker-compose up
-
-Docker in Production
-Docker Swarm
-
-Docker Swarm is Docker’s native clustering and orchestration tool. It allows you to manage a group of Docker engines as a single Swarm.
-Kubernetes
-
-Kubernetes is an open-source system for automating deployment, scaling, and management of containerized applications.
-Best Practices
-
-    Use .dockerignore to exclude files from the build context.
-    Always pin versions in your Dockerfile to avoid breaking changes.
-    Keep your images small by minimizing layers and using multi-stage builds.
-    Regularly prune unused images, containers, and volumes.
-
-Resources
-
-    Official Docker Documentation
-    Play with Docker
-    DockerHub
+```
