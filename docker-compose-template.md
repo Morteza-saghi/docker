@@ -17,6 +17,8 @@ services:
       - "<host_port>:<container_port>"  # Map host port to container port (optional)
     volumes:
       - "<host_path>:<container_path>"  # Mount volumes from host to container (optional)
+    networks:
+      - my-network
     environment:
       - <key>=<value>  # Set environment variables (optional)
     depends_on:
